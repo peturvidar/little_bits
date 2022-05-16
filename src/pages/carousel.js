@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import ReactSimplyCarousel from 'react-simply-carousel';
+import image1 from './images/carousel1.jpg';
+import image2 from './images/carousel2.jpg';
+import image3 from './images/carousel3.jpg';
+import ".././App.css";
+
 
 const Carousel = () => {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -47,27 +52,18 @@ const Carousel = () => {
         }}
         responsiveProps={[
           {
-            itemsToShow: 2,
-            itemsToScroll: 2,
+            itemsToShow: 1,
+            itemsToScroll: 1,
             minWidth: 768,
           },
         ]}
-        speed={400}
+        speed={100}
         easing="linear"
       >
-        {/* here you can also pass any other element attributes. Also, you can use your custom components as slides */}
-        <div style={{ width: 300, height: 300, background: '#ff80ed' }}>
-          slide 0
-        </div>
-        <div style={{ width: 300, height: 300, background: '#065535' }}>
-          slide 1
-        </div>
-        <div style={{ width: 300, height: 300, background: '#000000' }}>
-          slide 2
-        </div>
-        <div style={{ width: 300, height: 300, background: '#133337' }}>
-          slide 3
-        </div>
+        
+        <img className="carouselImage" src={image1} />
+        <img className="carouselImage" src={image2}/>
+        <img className="carouselImage" src={image3}/>
         
       </ReactSimplyCarousel>
     </div>

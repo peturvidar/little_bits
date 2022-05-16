@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import Carousel from './pages/carousel';
+import Carousel from './Carousel';
+import "@fontsource/playfair-display";
+import Color from "color";
 
 const Container1 = styled.div`
-background: transparent;
 border: 2px black solid;
 height: 600px;
 width: 800px;
@@ -10,11 +11,15 @@ color: black;
 `;
 
 const Container2 = styled.div`
-border: 2px black solid;
+background-color: "#3e6053";
+opacity: 100%;
+border: 2px red solid;
 height: 200px;
 width: 400px;
 margin: 10px;
 color: black;
+display: flex;
+align-items: end;
 `
 const Container3 = styled.div`
 border: 2px black solid;
@@ -31,34 +36,103 @@ margin: 10px;
 color: black;
 `;
 
-const FlexboxContainer = styled.div`
+const FlexboxContainerRow = styled.div`
+border: 2px blue solid;
 display: flex;
 flex-direction: row;
-`
+`;
 
+const FlexboxContainerCol = styled.div`
+height: 350px;
+border: 2px green solid;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-between;
+flex-wrap: wrap;
+`;
+const FlexboxContainerCol2 = styled.div`
+width: 370px;
+height: 200px;
+border: 2px green solid;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-between;
+flex-wrap: wrap;
+`;
+
+const OrderButton = styled.button`
+background: #C16757;
+color: white;
+font-size: 18px;
+border-radius: 3px;
+width: 150px;
+height: 50px;
+margin-bottom: 10px;
+`;
+
+const FindButton = styled.button`
+background: #C16757;
+color: white;
+font-size: 18px;
+border-radius: 3px;
+width: 150px;
+height: 50px;
+margin-bottom: 10px;
+`;
+
+const Text = styled.div`
+color: #C16757;
+font-size: 30px;
+font-family: "Playfair Display";
+font-weight: bold;
+`;
+
+const InputField = styled.input`
+::placeholder,
+::-webkit-input-placeholder {
+    color: #C16757;
+    margin-top: 100px;
+    align-items: end;
+
+}
+`;
 const Home = () => {
     return(
         
-        <Container1>
-        <FlexboxContainer>
+        <Container1 style={{ 
+            backgroundColor: Color("#3e6053").alpha(0.7).string()
+        }}>
+        <FlexboxContainerRow>
             <Carouselbox>
-
+            <Carousel></Carousel>
             </Carouselbox>
-
             <Container2>
-                Order flow box
+                <FlexboxContainerCol2>
+                <Text>Order flow box</Text>
+                <OrderButton>Order here</OrderButton>
+                </FlexboxContainerCol2>
             </Container2>
-            </FlexboxContainer>
-            <FlexboxContainer>
+            </FlexboxContainerRow>
+            <FlexboxContainerRow>
                 <Container3>
-                    Order box
+                    <FlexboxContainerCol>
+                    <Text>Find your order</Text>
+                    <InputField placeholder="Enter email here"></InputField>
+                    <FindButton>Find</FindButton>
+                    </FlexboxContainerCol>
                 </Container3>
+                
                 <Container3>
+                    <FlexboxContainerCol>
+                    <Text>Your order</Text>
                     Order content
+                    </FlexboxContainerCol>
                 </Container3>
-            </FlexboxContainer>
+            </FlexboxContainerRow>
         </Container1>
-        
+    
     )
 }
 
