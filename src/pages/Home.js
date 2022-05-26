@@ -2,11 +2,14 @@ import styled from 'styled-components';
 import Carousel from './Carousel';
 import "@fontsource/playfair-display";
 import Color from "color";
+import {Link} from "react-router-dom";
+
 
 const Container1 = styled.div`
+margin-top: 100px;
 border: 2px black solid;
-height: 600px;
-width: 800px;
+height: auto;
+width: auto;
 color: black;
 `;
 
@@ -20,16 +23,16 @@ margin: 10px;
 color: black;
 display: flex;
 align-items: end;
-`
+`;
 const Container3 = styled.div`
-border: 2px black solid;
+border: 2px red solid;
 height: 350px;
 width: 400px;
 margin: 10px;
 color: black;
-`
+`;
 const Carouselbox = styled.div`
-border: 2px black solid;
+border: 2px purple solid;
 height: 200px;
 width: 400px;
 margin: 10px;
@@ -111,7 +114,7 @@ const Home = () => {
             <Container2>
                 <FlexboxContainerCol2>
                 <Text>Order flow box</Text>
-                <OrderButton>Order here</OrderButton>
+                <Link to="/Food"><OrderButton>Order here</OrderButton></Link>
                 </FlexboxContainerCol2>
             </Container2>
             </FlexboxContainerRow>
