@@ -32,18 +32,14 @@
 
 .App-link {
   color: #61dafb;
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .carouselImage {
   width: 300px;
-  height: 200px; 
+  height: 200px;
+}
+
+.isDisabled {
+  pointer-events: none;
 }

@@ -11,7 +11,8 @@ const OrderContext = createContext({
     setDate: () => {},
     guests: null,
     setGuests: () => {},
-
+    totalOrder: null,
+    setTotalOrder: () => {},
 });
 
 export default OrderContext;

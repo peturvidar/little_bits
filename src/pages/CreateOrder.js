@@ -10,7 +10,7 @@ margin-top: 20px;
 `;
 
 export default function CreateOrder() {
-    const { order } = useContext(OrderContext);
+    const { userEmail, setUserEmail } = useContext(OrderContext);
     const totalOrder = order.map((email) => {
         <CreateOrder
         key={email.id}

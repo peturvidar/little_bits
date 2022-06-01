@@ -1,72 +1,14 @@
 import styled from "styled-components";
 import "@fontsource/playfair-display";
-import Color from "color";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {
   useEffect,
   useState,
   useContext,
-  createContext,
-  setState,
 } from "react";
 import "../App.css";
 import OrderContext from "./OrderContext";
-
-const Wrapper = styled.div`
-text-align: center;
-background: red;
-height: 100%;
-box-sizing: border-box;
-padding-top: 5rem;
-`;
-
-const Container1 = styled.div`
-  margin-top: 100px;
-  border: 2px black solid;
-  height: auto;
-  width: auto;
-  color: black;
-  display: flex;
-  max-width: 800px;
-`;
-
-const FlexboxContainerCol1 = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  width: 800px;
-  height: 600px;
-`;
-
-const FlexboxContainerCol2 = styled.div`
-  column-count: 2;
-  border: 2px blue solid;
-  flex-direction: column;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  height: 100%;
-  width: 50%;
-  background: #3e6053;
-  overflow-y: scroll;
-  padding-top: 2rem;
-`;
-
-const FlexboxContainerCol3 = styled.div`
-  flex-direction: column;
-  align-items: center;
-  justify-content: end;
-  display: flex;
-  border: 2px red solid;
-  width: 45%;
-  height: auto;
-  margin-right: 10px;
-  margin-top: 10px;
-  max-height: 400px;
-`;
 
 const Text = styled.div`
   color: #c16757;
@@ -93,17 +35,84 @@ const Img = styled.img`
 `;
 
 const Card = styled.div`
-  width: 75%;
-  height: 40%;
+  border: 5px red solid;
+  width: 50%;
+  height: 80%;
   background: #e0e39a;
   font-weight: bold;
   padding: 2rem;
-  font-size: 30px;
-  margin: 0.5rem;
+  font-size: 2rem;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+const Container = styled.div`
+  border: 5px black solid;
+  max-width: 1200px;
+  max-height: auto;
+  color: black;
+  background: #3e6053;
+  display: grid;
+  height: 100vh;
+  align-self: center;
+  padding: 10px;
+  margin: auto;
+  margin-top: 150px;
+  grid-template-areas: "content content1";
+  text-align: center;
+  grid-gap: 2rem;
+  @media (max-width: 550px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.4fr 0.4fr 2.2fr 1.2fr 1fr;
+    grid-template-areas:
+      "content"
+      "content1";
+  }
 `;
 
-const Drinks = () =>  {
+const Content = styled.div`
+  border: 5px blue solid;
+  grid-template-columns: repeat(2, 1fr);
+
+  display: grid;
+  overflow-y: scroll;
+  background: #3e6053;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+`;
+
+const Content2 = styled.div`
+  background: #e0e39a;
+  flex-direction: column;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  min-width: 300px;
+`;
+
+const DrinkOrder = styled.div`
+  background: #3e6053;
+  font-size: 1.7rem;
+  font-family: "Playfair Display";
+  font-weight: bold;
+  width: 70%;
+  height: 100%;
+  padding: 2rem;
+  margin: 0.5rem;
+  flex-direction: column;
+  display: flex;
+  border: 5px solid yellow;
+  max-height: 600px;
+  flex-wrap: wrap;
+`;
+
+const Drinks = () => {
   const { drinkOrder, setDrinkOrder } = useContext(OrderContext);
+  const { totalOrder, setTotalOrder } = useContext(OrderContext);
   const [drinks, setDrinks] = useState([]);
 
   const getDrinks = async () => {
@@ -114,32 +123,41 @@ const Drinks = () =>  {
   useEffect(() => {
     getDrinks();
   }, []);
-  
 
- 
+  function setOrder(props) {
+    setDrinkOrder([...drinkOrder, props]);
+    setTotalOrder([...totalOrder, props]);
+    localStorage.setItem("drinkOrder", setDrinkOrder);
+    console.log(props);
+  }
+
   return (
-    <Container1
-      style={{
-        backgroundColor: Color("#3e6053").alpha(0.9).string(),
-      }}
-    >
-      <FlexboxContainerCol1>
-        <FlexboxContainerCol2>
-          {drinks.map((drink) => (
-            <Card onClick={() => setDrinkOrder([...drinkOrder, drink.name])}>
-              <Img src={drink.image_url} />
-              <div>{drink.name}</div>
-            </Card>
-          ))}
-        </FlexboxContainerCol2>
-        <FlexboxContainerCol3>
-          
-        </FlexboxContainerCol3>
+    <Container>
+      <Content>
+        {drinks.map((drink) => (
+          <Card onClick={() => setOrder(drink.name)}>
+            <Img src={drink.image_url} />
+            <div>{drink.name}</div>
+          </Card>
+        ))}
+      </Content>
+
+      <Content2>
+        <DrinkOrder>
+          <Text>Your Drinks:</Text>
+          <table {...drinkOrder}>
+            <thead>
+              {drinkOrder.map((drink) => (
+                <tr>{drink}</tr>
+              ))}
+            </thead>
+          </table>
+        </DrinkOrder>
         <Link to="/Order">
           <NextButton>Next</NextButton>
         </Link>
-      </FlexboxContainerCol1>
-    </Container1>
+      </Content2>
+    </Container>
   );
 };
 

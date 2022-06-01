@@ -1,14 +1,11 @@
 Drinks:
 --búið--Þarf að raða upp drinks í 2 columns
 
-Gera allt flex!!!
 
 !Gera onClick limit í drinks og Food!
 
 gera input validation á email
 
-stækka takka á number of guests in
+setja upp key arrays fyrir search order
 
-geyma date úr datepicker
-
-geyma number of guests in number of guests
+gera allt flex

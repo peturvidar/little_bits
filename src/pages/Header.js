@@ -8,7 +8,7 @@ align-items: center;
 justify-content: center;
 height: 300px;
 width: 100%;
-background: #e0e39a;
+background: #3e6053;
 `;
 
 const ImgContainer = styled.div`

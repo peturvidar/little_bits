@@ -1,36 +1,32 @@
 import styled from "styled-components";
 import "@fontsource/playfair-display";
-import Color from "color";
-import React, { useState, useEffect, useContext, createContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import OrderContext from "./OrderContext";
 
-const Container1 = styled.div`
-  margin-top: 100px;
-  border: 2px blue solid;
-  height: auto;
-  width: auto;
+const Container = styled.div`
+  border: 5px black solid;
+  max-width: 1200px;
+  max-height: 100%;
   color: black;
-  max-width: 800px;
-`;
-
-const Container2 = styled.div`
-  border: 2px red solid;
-  height: 600px;
-  width: 400px;
-  margin: 10px;
-  color: black;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-evenly;
+  background: #3e6053;
+  display: grid;
+  height: 100vh;
+  align-self: center;
   padding: 10px;
-`;
-
-const FlexboxContainerRow = styled.div`
-  display: flex;
-  flex-direction: row;
+  margin: auto;
+  margin-top: 150px;
+  grid-template-areas: "content content2";
+  text-align: center;
+  grid-gap: 2rem;
+  @media (max-width: 550px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.4fr 0.4fr 2.2fr 1.2fr 1fr;
+    grid-template-areas:
+      "content"
+      "content2";
+  }
 `;
 
 const NextButton = styled.button`
@@ -38,22 +34,23 @@ const NextButton = styled.button`
   color: white;
   font-size: 16px;
   border-radius: 3px;
-  width: 150px;
+  width: 100%;
+  min-width: 100px;
   height: 40px;
-  margin-bottom: 10px;
-  margin-right: 75px;
-  margin-left: 100px;
+  margin-top: 20px;
 `;
 
 const GenerateButton = styled.button`
   background: #c16757;
   color: white;
-  font-size: 16px;
+  font-size: 1rem;
   border-radius: 3px;
-  width: 220px;
+  width: auto;
   height: 50px;
   margin-bottom: 20px;
   position: sticky;
+  bottom: 0;
+  align-self: center;
 `;
 
 const Text = styled.div`
@@ -64,13 +61,6 @@ const Text = styled.div`
   align-items: center;
 `;
 
-const InputField = styled.input`
-  ::placeholder,
-  ::-webkit-input-placeholder {
-    color: #c16757;
-  }
-`;
-
 const Img = styled.img`
   max-height: 70%;
   max-width: 70%;
@@ -78,9 +68,9 @@ const Img = styled.img`
 
 const Card = styled.div`
   flex-direction: column;
-  width: auto;
+  width: 80%;
   height: auto;
-  background: #e0e39a;
+  background: #3e6053;
   font-weight: bold;
   padding: 15px;
   font-size: 30px;
@@ -88,72 +78,99 @@ const Card = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
+  align-self: center;
 `;
 const FoodOrder = styled.div`
+  background: #3e6053;
+  font-size: 1.7rem;
   font-family: "Playfair Display";
   font-weight: bold;
   width: 75%;
-  height: auto;
+  height: 100%;
   padding: 2rem;
   margin: 0.5rem;
   flex-direction: column;
   display: flex;
-  grid-template-columns: repeat;
-  border: 2px solid black;
-  max-height: 300px;
-  columns: 2 auto;
+  border: 5px solid yellow;
   flex-wrap: wrap;
+  max-height: 600px;
+  justify-content: space-evenly;
+`;
+const Content = styled.div`
+  background: #e0e39a;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 `;
 
-const Food = () =>  {
+const Content2 = styled.div`
+  background: #e0e39a;
+  flex-direction: column;
+  display: flex;
+  justify-content: space-evenly;
+  width: 98%;
+  height: 100%;
+  align-items: center;
+  min-width: 300px;
+  flex-wrap: wrap;
+  padding: 0.25rem;
+`;
+
+const Food = () => {
   const { dishOrder, setDishOrder } = useContext(OrderContext);
-  const [ dish, setDish ] = useState();
+  const { totalOrder, setTotalOrder } = useContext(OrderContext);
+  const [dish, setDish] = useState();
   const [img, setImg] = useState();
-  
-  
+  const [category, setCategory] = useState("");
+
   const getDish = async () => {
     const response = await axios.get(
       "https://themealdb.com/api/json/v1/1/random.php"
     );
-      setImg(response.data.meals[0].strMealThumb);
+    setImg(response.data.meals[0].strMealThumb);
     setDish(response.data.meals[0].strMeal);
-    
+    setCategory(response.data.meals[0].strCategory);
   };
 
-    useEffect(() => {  
+  useEffect(() => {
     getDish();
-    
+    setDishOrder([...dishOrder, dish]);
   }, []);
 
-  
+  function setOrder() {
+    setDishOrder([...dishOrder, dish]);
+    setTotalOrder([...totalOrder, dish]);
+    localStorage.setItem("dishOrder", dishOrder);
+  }
 
   return (
-  
-    <Container1
-      style={{
-        backgroundColor: Color("#3e6053").alpha(0.9).string(),
-      }}
-    >
-      <FlexboxContainerRow>
-        <Container2>
-          <Card onClick={() => setDishOrder([...dishOrder, dish])}>
-            <Img src={img}></Img>
-            <Text>{dish}</Text>
-          </Card>
-          <GenerateButton onClick={getDish}>Generate new dish</GenerateButton>
-        </Container2>
-        <Container2>
-          <FoodOrder>
-            
-          </FoodOrder>
+    <Container>
+      <Content>
+        <Card onClick={setOrder}>
+          <Img src={img}></Img>
+          <Text>{dish}</Text>
+          <Text>{category}</Text>
+        </Card>
+        <GenerateButton onClick={getDish}>Generate new dish</GenerateButton>
+      </Content>
+      <Content2>
+        <FoodOrder>
+          <Text>Your food:</Text>
+          <table {...dishOrder}>
+            <thead>
+              {dishOrder.map((dishOrder) => (
+                <tr>{dishOrder}</tr>
+              ))}
+            </thead>
+          </table>
           <Link to="/Drinks">
             <NextButton>Next</NextButton>
           </Link>
-        </Container2>
-      </FlexboxContainerRow>
-      <FlexboxContainerRow></FlexboxContainerRow>
-    </Container1>
-   
+        </FoodOrder>
+      </Content2>
+    </Container>
   );
 };
 

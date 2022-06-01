@@ -1,88 +1,30 @@
 import styled from "styled-components";
-import Carousel from "./Carousel";
+import React, { useState, useEffect, useContext } from "react";
 import "@fontsource/playfair-display";
-import Color from "color";
-import { useEffect, useState, createContext, useContext } from "react";
 import OrderContext from "./OrderContext";
 
-
-const Container1 = styled.div`
-  margin-top: 100px;
-  background: transparent;
-  border: 2px black solid;
+const Container = styled.div`
+  border: 5px black solid;
+  max-width: 800px;
+  max-height: 800px;
   color: black;
-  width: 600px;
-  height: 600px;
-`;
-
-const Container2 = styled.div`
-  border: 2px red solid;
-  height: 200px;
-  width: 400px;
-  margin: 10px;
-  color: black;
-  display: flex;
-  align-items: end;
-`;
-const Container3 = styled.div`
-  border: 2px black solid;
-  height: 350px;
-  width: 400px;
-  margin: 10px;
-  color: black;
-`;
-const Carouselbox = styled.div`
-  border: 2px black solid;
-  height: 200px;
-  width: 400px;
-  margin: 10px;
-  color: black;
-`;
-
-const FlexboxContainerRow = styled.div`
-  border: 2px blue solid;
-  display: flex;
-  flex-direction: row;
-`;
-
-const FlexboxContainerCol = styled.div`
-  height: 350px;
-  border: 2px green solid;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-`;
-const FlexboxContainerCol2 = styled.div`
-  width: 370px;
-  height: 200px;
-  border: 2px green solid;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-`;
-
-const OrderButton = styled.button`
-  background: #c16757;
-  color: white;
-  font-size: 18px;
-  border-radius: 3px;
-  width: 150px;
-  height: 50px;
-  margin-bottom: 10px;
-`;
-
-const FindButton = styled.button`
-  background: #c16757;
-  color: white;
-  font-size: 18px;
-  border-radius: 3px;
-  width: 150px;
-  height: 50px;
-  margin-bottom: 10px;
+  background: #3e6053;
+  display: grid;
+  height: 100vh;
+  align-items: left;
+  padding: 10px;
+  margin: auto;
+  margin-top: 150px;
+  grid-template-areas: "content content2";
+  text-align: left;
+  grid-gap: 0.25rem;
+  @media (max-width: 550px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.4fr 0.4fr 2.2fr 1.2fr 1fr;
+    grid-template-areas:
+      "content"
+      "content2";
+  }
 `;
 
 const Text = styled.div`
@@ -90,34 +32,59 @@ const Text = styled.div`
   font-size: 30px;
   font-family: "Playfair Display";
   font-weight: bold;
+  align-items: left;
+  margin-left: 10px;
+`;
+const Text2 = styled.div`
+  font-weight: bold;
+  font-size: 25px;
+  font-family: "Playfair Display";
+  padding: 10px;
+  margin-left: 10px;
 `;
 
-const InputField = styled.input`
-  ::placeholder,
-  ::-webkit-input-placeholder {
-    color: #c16757;
-    margin-top: 100px;
-    align-items: end;
-  }
+const TotalOrder = styled.div`
+  background: #3e6053;
+  font-size: 1.2rem;
+  font-family: "Playfair Display";
+  font-weight: bold;
+  width: auto;
+  height: auto;
+  padding: 2rem;
+  flex-direction: column;
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 600px;
+  align-items: left;
 `;
 
-const Receipt = () => {
-  
-  return( 
-    
-    <Container1>
+export default function Receipt() {
+  const { totalOrder } = useContext(OrderContext);
+
+  return (
+    <Container>
       <OrderContext.Consumer>
-      {(props) => { 
-        console.log(props)
-        return(
-
-        <div></div>
-      )}}
-    </OrderContext.Consumer>
-    </Container1>
-    
-  
+        {(props) => {
+          console.log(props);
+          return (
+            <div>
+              <Text>Your order:</Text>
+              <Text2>Date: {JSON.stringify(props.date)}</Text2>
+              <Text2>Guests: {props.guests}</Text2>
+              <Text2>Email: {props.userEmail}</Text2>
+              <TotalOrder>
+                <table {...totalOrder}>
+                  <thead>
+                    {totalOrder.map((item) => (
+                      <tr>{item}</tr>
+                    ))}
+                  </thead>
+                </table>
+              </TotalOrder>
+            </div>
+          );
+        }}
+      </OrderContext.Consumer>
+    </Container>
   );
-};
-
-export default Receipt;
+}
